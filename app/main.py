@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from . import keys, messages
+from routes import keys, messages
 
 app = FastAPI()
 
