@@ -1,14 +1,10 @@
 import configparser
-from fastapi import FastAPI, HTTPException
+from fastapi import APIRouter, HTTPException
 
-app = FastAPI()
+router = APIRouter()
 configparser = configparser.ConfigParser()
 
-@app.get("/")
-def read_root():
-    return {"status": "OK"}
-
-@app.get("/keys/")
+@router.get("/keys/")
 def read_keys(team_id: str):
     configparser.read("keys.ini")
 
@@ -16,6 +12,3 @@ def read_keys(team_id: str):
         return configparser[team_id]
     else:
         raise HTTPException(status_code=404, detail="Team ID not found")
-
-
-
