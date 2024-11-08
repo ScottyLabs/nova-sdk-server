@@ -1,6 +1,7 @@
 from enum import Enum
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
+import json
 from pydantic import BaseModel
 from typing import List, Optional
 
@@ -25,7 +26,7 @@ class MessageArgs(BaseModel):
 
 
 @router.get("/message/")
-async def handle_message(args: MessageArgs):
+def handle_message(args: MessageArgs):
     keys = read_keys_for_team(team_id=args.team_id)
 
     if keys is None:
@@ -68,8 +69,12 @@ async def handle_message(args: MessageArgs):
 
         def completion_stream(api_response_stream):
             for chunk in api_response_stream:
+                # print(chunk)
                 if chunk.choices[0].delta.content is not None:
-                    yield chunk.choices[0].delta.content
+                    yield json.dumps({
+                        "modality": "text",
+                        "chunk_text": chunk.choices[0].delta.content
+                    })
 
         return StreamingResponse(
             content=completion_stream(completion),

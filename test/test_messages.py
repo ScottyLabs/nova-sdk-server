@@ -24,3 +24,6 @@ def test_streaming_chat_completion():
     # We expect the stream to take at least 1 second to complete
     assert time.time() - start_time > 1.0
 
+if __name__ == "__main__":
+    test_streaming_chat_completion()
+
