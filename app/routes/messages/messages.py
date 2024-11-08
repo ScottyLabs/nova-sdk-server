@@ -73,7 +73,7 @@ def handle_message(args: MessageArgs):
                 if chunk.choices[0].delta.content is not None:
                     yield json.dumps({
                         "modality": "text",
-                        "chunk_text": chunk.choices[0].delta.content
+                        "chunk_content": chunk.choices[0].delta.content
                     })
 
         return StreamingResponse(
